@@ -6,7 +6,7 @@ data "google_iam_policy" "publisher" {
   binding {
     role = "roles/pubsub.publisher"
     members = [
-      "serviceAccount:service-${data.google_project.project.number}@gcp-sa-monitoring-notification.iam.gserviceaccount.com",
+      "serviceAccount:cloud-logs@system.gserviceaccount.com"
     ]
   }
 }
