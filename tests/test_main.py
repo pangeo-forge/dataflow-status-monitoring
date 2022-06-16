@@ -17,15 +17,13 @@ repo = "repo"
 )
 def test_post_status(requests):
     job_name = "test"
-    alert = {
-        "incident": {
-            "resource": {"labels": {"job_name": job_name}},
-            "policy_name": "Dataflow Succeeded Alert",
-        }
+    message = {
+        "resource": {"labels": {"job_name": job_name}},
+        "severity": "DEBUG"
     }
-    alert_bytes = json.dumps(alert).encode("utf-8")
-    alert_encoded = base64.b64encode(alert_bytes)
-    event = {"data": alert_encoded}
+    message_bytes = json.dumps(message).encode("utf-8")
+    message_encoded = base64.b64encode(message_bytes)
+    event = {"data": message_encoded}
     post_status(event, {})
     requests.post.assert_called_once_with(
         f"https://api.github.com/repos/{org}/{repo}/dispatches",
