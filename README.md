@@ -16,7 +16,7 @@ repo_org         = "pangeo-forge"
 repo             = "staged-recipes"
 ```
 
-## Deploying the resources.
+## Deploying the resources
 ```
 $ cd terraform
 $ terraform init
