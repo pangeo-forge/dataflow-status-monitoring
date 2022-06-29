@@ -1,8 +1,12 @@
 resource "google_secret_manager_secret" "secret-basic" {
-  secret_id = "github_repository_dispatch_pat-latest"
+  secret_id = "github_repository_dispatch_pat"
 
   replication {
-    automatic = true
+    user_managed {
+      replicas {
+        location = var.region
+      }
+    }
   }
 }
 

@@ -37,6 +37,6 @@ resource "google_cloudfunctions_function" "function" {
   secret_environment_variables {
     key     = "PAT"
     secret  = "github_repository_dispatch_pat"
-    version = "latest"
+    version = 1
   }
 }
