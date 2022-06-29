@@ -27,7 +27,7 @@ def test_post_status(requests):
     post_status(event, {})
     requests.post.assert_called_once_with(
         f"https://api.github.com/repos/{org}/{repo}/dispatches",
-        data=f'{{"client_payload": {{"flow_run_name": "{job_name}", "state": "Success"}}}}',
+        data=f'{{"event_type": "prefect_webhook", "client_payload": {{"flow_run_name": "{job_name}", "state": "Success"}}}}',
         headers={
             "Authorization": f"token {pat}",
             "Accept": "application/vnd.github.v3+json",
