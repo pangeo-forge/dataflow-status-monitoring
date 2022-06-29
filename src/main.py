@@ -11,10 +11,17 @@ def post_status(event, context):
     job_name = message["resource"]["labels"]["job_name"]
     severity = message["severity"]
     print(job_name)
-    state = "Failure"
+    state = "Failed"
     if severity == "DEBUG":
         state = "Success"
-    payload = {"client_payload": {"flow_run_name": job_name, "state": state}}
+    payload = {
+        # NOTE: These webhooks originate from Dataflow, but we're using
+        # Prefectisms ("prefect_webhook", "flow_run_name") for backwards
+        # compatibility during the transition from Prefect -> Dataflow.
+        # These can be changed once all systems switch to Dataflow.
+        "event_type": "prefect_webhook",
+        "client_payload": {"flow_run_name": job_name, "state": state},
+    }
     headers = {
         "Authorization": f"token {os.environ['PAT']}",
         "Accept": "application/vnd.github.v3+json",
