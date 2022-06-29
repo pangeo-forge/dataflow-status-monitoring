@@ -4,14 +4,12 @@ GCP Resources to report the status of completed Dataflow jobs to a repository di
 
 ## Requirements
 - Terraform
-- A GCP Service Account with project OWNER role.
-- A key file generated for this service account.
-- A GCP project with the necessary services activated. These include
-
-- Cloud Function API
-- Cloud Build API
-- Cloud Pub/Sub API
-- Cloud Logging API
+- A GCP Service Account with project OWNER role + a key file generated for this service account.
+- A GCP project with the necessary services activated. These include:
+  - Cloud Function API
+  - Cloud Build API
+  - Cloud Pub/Sub API
+  - Cloud Logging API
 
 
 ## Environment Settings
