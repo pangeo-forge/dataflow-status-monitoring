@@ -15,10 +15,10 @@ def post_status(event, context):
     if severity == "DEBUG":
         state = "Success"
     payload = {
-	# NOTE: These webhooks originate from Dataflow, but we're using
-	# Prefectisms ("prefect_webhook", "flow_run_name") for backwards
-	# compatibility during the transition from Prefect -> Dataflow.
-	# These can be changed once all systems switch to Dataflow.
+        # NOTE: These webhooks originate from Dataflow, but we're using
+        # Prefectisms ("prefect_webhook", "flow_run_name") for backwards
+        # compatibility during the transition from Prefect -> Dataflow.
+        # These can be changed once all systems switch to Dataflow.
         "event_type": "prefect_webhook",
         "client_payload": {"flow_run_name": job_name, "state": state},
     }
