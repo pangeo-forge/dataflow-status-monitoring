@@ -40,6 +40,3 @@ resource "google_cloudfunctions_function" "function" {
     version = "latest"
   }
 }
-
-
-
