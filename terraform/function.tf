@@ -34,7 +34,7 @@ resource "google_cloudfunctions_function" "function" {
     REPO_ORG = "${var.repo_org}"
     REPO     = "${var.repo}"
   }
-  secret_environment_variables = {
+  secret_environment_variables {
     key     = "PAT"
     secret  = "github_repository_dispatch_pat"
     version = "latest"
