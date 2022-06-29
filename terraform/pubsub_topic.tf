@@ -6,7 +6,7 @@ data "google_iam_policy" "publisher" {
   binding {
     role = "roles/pubsub.publisher"
     members = [
-      "serviceAccount:cloud-logs@system.gserviceaccount.com"
+      google_logging_project_sink.logsink.writer_identity,
     ]
   }
 }
