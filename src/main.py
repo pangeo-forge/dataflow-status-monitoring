@@ -14,7 +14,10 @@ def post_status(event, context):
     state = "Failure"
     if severity == "DEBUG":
         state = "Success"
-    payload = {"client_payload": {"flow_run_name": job_name, "state": state}}
+    payload = {
+        "event_type": "prefect_webhook",
+        "client_payload": {"flow_run_name": job_name, "state": state},
+    }
     headers = {
         "Authorization": f"token {os.environ['PAT']}",
         "Accept": "application/vnd.github.v3+json",
