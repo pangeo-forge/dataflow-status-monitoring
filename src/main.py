@@ -11,7 +11,7 @@ def post_status(event, context):
     job_name = message["resource"]["labels"]["job_name"]
     severity = message["severity"]
     print(job_name)
-    state = "Failure"
+    state = "Failed"
     if severity == "DEBUG":
         state = "Success"
     payload = {
