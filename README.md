@@ -10,6 +10,7 @@ GCP Resources to report the status of completed Dataflow jobs to a repository di
   - Cloud Build API
   - Cloud Pub/Sub API
   - Cloud Logging API
+  - Secret Manager API
 
 
 ## Environment Settings
