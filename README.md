@@ -20,7 +20,7 @@ credentials_file = "<Your service account credentials key file path>"
 project          = "<Your GCP project id>"
 pat              = "<Your Github PAT with permissions for repository dispatch>"
 repo_org         = "pangeo-forge"
-repo             = "staged-recipes"
+repo             = "registrar"
 ```
 
 ## Deploying the resources
