@@ -18,9 +18,7 @@ The Terraform environment variables can be configured with the us of a [.tfvars 
 ```
 credentials_file = "<Your service account credentials key file path>" 
 project          = "<Your GCP project id>"
-pat              = "<Your Github PAT with permissions for repository dispatch>"
-repo_org         = "pangeo-forge"
-repo             = "registrar"
+webhook_secret   = "<Webhook secret to secure payloads>"
 ```
 
 ## Deploying the resources

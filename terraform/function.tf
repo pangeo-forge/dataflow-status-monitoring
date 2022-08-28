@@ -1,5 +1,5 @@
 resource "google_storage_bucket" "function_bucket" {
-  name     = "${var.project}-post-dataflow-status-function"
+  name     = "${var.project}-github-app-post-dataflow-status-function"
   location = var.region
 }
 
@@ -17,7 +17,7 @@ resource "google_storage_bucket_object" "zip" {
 }
 
 resource "google_cloudfunctions_function" "function" {
-  name    = "post-dataflow-status"
+  name    = "github-app-post-dataflow-status"
   runtime = "python39"
 
   source_archive_bucket = google_storage_bucket.function_bucket.name

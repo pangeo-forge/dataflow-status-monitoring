@@ -6,7 +6,7 @@ variable "credentials_file" {
   type = string
 }
 
-variable "pat" {
+variable "webhook_secret" {
   type = string
 }
 
@@ -18,12 +18,4 @@ variable "region" {
 variable "zone" {
   type    = string
   default = "us-central1-c"
-}
-
-variable "repo_org" {
-  type = string
-}
-
-variable "repo" {
-  type = string
 }
