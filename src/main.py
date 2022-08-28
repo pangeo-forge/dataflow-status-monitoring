@@ -38,14 +38,12 @@ def post_status(event, context):
     # The payload and headers for this request mimic the GitHub Events API.
     # This allows us to receive them on the same route as GitHub App webhooks
     # without special-casing in the route handler.
-    payload = json.dumps(
-        {
-            "action": "complete",
-            "recipe_run_id": recipe_run_id,
-            "state": state,
-        }
-    )
-    payload_bytes = payload.encode("utf-8")
+    payload = {
+        "action": "complete",
+        "recipe_run_id": recipe_run_id,
+        "state": state,
+    }
+    payload_bytes = json.dumps(payload).encode("utf-8")
     webhook_secret = bytes(os.environ["WEBHOOK_SECRET"], encoding="utf-8")
     h = hmac.new(webhook_secret, payload_bytes, hashlib.sha256)
     headers = {

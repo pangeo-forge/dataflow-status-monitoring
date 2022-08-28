@@ -30,14 +30,13 @@ def test_post_status(requests):
     event = {"data": message_encoded}
     post_status(event, {})
 
-    expected_webhook_payload = json.dumps(
-        {
-            "action": "complete",
-            "recipe_run_id": 1,
-            "state": "success",
-        }
-    )
-    expected_webhook_payload_bytes = expected_webhook_payload.encode("utf-8")
+    expected_webhook_payload = {
+        "action": "complete",
+        "recipe_run_id": 1,
+        "state": "success",
+    }
+
+    expected_webhook_payload_bytes = json.dumps(expected_webhook_payload).encode("utf-8")
     webhook_secret = bytes(os.environ["WEBHOOK_SECRET"], encoding="utf-8")
     h = hmac.new(
         webhook_secret,
