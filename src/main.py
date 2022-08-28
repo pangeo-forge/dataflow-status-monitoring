@@ -14,9 +14,9 @@ def post_status(event, context):
     hook_url = message["resource"]["labels"]["hook_url"]
     severity = message["severity"]
     print(job_name, hook_url)
-    state = "Failed"
+    state = "failure"
     if severity == "DEBUG":
-        state = "Success"
+        state = "success"
     # The payload and headers for this request mimic the GitHub Events API.
     # This allows us to receive them on the same route as GitHub App webhooks
     # without special-casing in the route handler.
@@ -25,7 +25,7 @@ def post_status(event, context):
         "job_name": job_name,
         "state": state,
     }
-    payload_bytes = bytes(payload, encoding="utf-8")
+    payload_bytes = json.dumps(message).encode("utf-8")
     webhook_secret = bytes(os.environ["WEBHOOK_SECRET"], encoding="utf-8")
     h = hmac.new(webhook_secret, payload_bytes, hashlib.sha256)
     headers = {
