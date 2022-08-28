@@ -54,7 +54,7 @@ def post_status(event, context):
     }
     response = requests.post(
         f"https://{webhook_url}",
-        json=payload,
+        data=payload,
         headers=headers,
     )
     print(f"{response.status_code = }", f"{response.text = }")
