@@ -3,6 +3,7 @@ import hashlib
 import hmac
 import json
 import os
+from urllib.parse import urlencode
 
 import requests
 
@@ -43,7 +44,7 @@ def post_status(event, context):
         "recipe_run_id": recipe_run_id,
         "state": state,
     }
-    payload_bytes = json.dumps(payload).encode("utf-8")
+    payload_bytes = urlencode(payload, doseq=True).encode("utf-8")
     webhook_secret = bytes(os.environ["WEBHOOK_SECRET"], encoding="utf-8")
     h = hmac.new(webhook_secret, payload_bytes, hashlib.sha256)
     headers = {
