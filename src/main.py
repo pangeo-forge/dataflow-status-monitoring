@@ -31,18 +31,18 @@ def post_status(event, context):
         webhook_url += "/github/hooks/"
     print(f"{job_name = }", f"{recipe_run_id = }", f"{webhook_url = }")
 
-    # infer state from severity level
-    state = "failure"
+    # infer conclusion from severity level
+    conclusion = "failure"
     if severity == "DEBUG":
-        state = "success"
+        conclusion = "success"
 
     # The payload and headers for this request mimic the GitHub Events API.
     # This allows us to receive them on the same route as GitHub App webhooks
     # without special-casing in the route handler.
     payload = {
-        "action": "complete",
+        "action": "completed",
         "recipe_run_id": recipe_run_id,
-        "state": state,
+        "conclusion": conclusion,
     }
     payload_bytes = urlencode(payload, doseq=True).encode("utf-8")
     webhook_secret = bytes(os.environ["WEBHOOK_SECRET"], encoding="utf-8")

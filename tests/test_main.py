@@ -32,9 +32,9 @@ def test_post_status(requests):
     post_status(event, {})
 
     expected_payload = {
-        "action": "complete",
+        "action": "completed",
         "recipe_run_id": 1,
-        "state": "success",
+        "conclusion": "success",
     }
 
     expected_payload_bytes = urlencode(expected_payload, doseq=True).encode("utf-8")
