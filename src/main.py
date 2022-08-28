@@ -1,4 +1,6 @@
 import base64
+import hashlib
+import hmac
 import json
 import os
 
@@ -9,27 +11,30 @@ def post_status(event, context):
     pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
     message = json.loads(pubsub_message)
     job_name = message["resource"]["labels"]["job_name"]
+    hook_url = message["resource"]["labels"]["hook_url"]
     severity = message["severity"]
-    print(job_name)
+    print(job_name, hook_url)
     state = "Failed"
     if severity == "DEBUG":
         state = "Success"
+    # The payload and headers for this request mimic the GitHub Events API.
+    # This allows us to receive them on the same route as GitHub App webhooks
+    # without special-casing in the route handler.
     payload = {
-        # NOTE: These webhooks originate from Dataflow, but we're using
-        # Prefectisms ("prefect_webhook", "flow_run_name") for backwards
-        # compatibility during the transition from Prefect -> Dataflow.
-        # These can be changed once all systems switch to Dataflow.
-        "event_type": "prefect_webhook",
-        "client_payload": {"flow_run_name": job_name, "state": state},
+        "action": "complete",
+        "job_name": job_name,
+        "state": state,
     }
+    payload_bytes = bytes(payload, encoding="utf-8")
+    webhook_secret = bytes(os.environ["WEBHOOK_SECRET"], encoding="utf-8")
+    h = hmac.new(webhook_secret, payload_bytes, hashlib.sha256)
     headers = {
-        "Authorization": f"token {os.environ['PAT']}",
+        "X-GitHub-Event": "dataflow",
+        "X-Hub-Signature-256": f"sha256={h.hexdigest()}",
         "Accept": "application/vnd.github.v3+json",
     }
-    org = os.environ['REPO_ORG']
-    repo = os.environ['REPO']
     requests.post(
-        f"https://api.github.com/repos/{org}/{repo}/dispatches",
+        hook_url,
         data=json.dumps(payload),
         headers=headers,
     )

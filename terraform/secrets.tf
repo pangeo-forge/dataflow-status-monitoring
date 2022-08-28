@@ -1,5 +1,5 @@
 resource "google_secret_manager_secret" "secret-basic" {
-  secret_id = "github_repository_dispatch_pat"
+  secret_id = "github_app_webook_secret"
 
   replication {
     user_managed {
@@ -13,7 +13,7 @@ resource "google_secret_manager_secret" "secret-basic" {
 resource "google_secret_manager_secret_version" "secret-version-basic" {
   secret = google_secret_manager_secret.secret-basic.id
 
-  secret_data = var.pat
+  secret_data = var.webhook_secret
 }
 
 resource "google_secret_manager_secret_iam_binding" "binding" {

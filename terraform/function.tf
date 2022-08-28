@@ -30,13 +30,9 @@ resource "google_cloudfunctions_function" "function" {
     event_type = "google.pubsub.topic.publish"
     resource   = resource.google_pubsub_topic.topic.id
   }
-  environment_variables = {
-    REPO_ORG = "${var.repo_org}"
-    REPO     = "${var.repo}"
-  }
   secret_environment_variables {
-    key     = "PAT"
-    secret  = "github_repository_dispatch_pat"
+    key     = "WEBHOOK_SECRET"
+    secret  = "github_app_webook_secret"
     version = 1
   }
 }
