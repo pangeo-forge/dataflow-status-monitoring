@@ -46,8 +46,7 @@ def test_post_status(requests):
     )
     requests.post.assert_called_once_with(
         "https://smee.io/pGKLaDu6CJwiBjJU",
-        data=expected_payload,
-        json=expected_payload_bytes,
+        json=expected_payload,
         headers={
             "X-GitHub-Event": "dataflow",
             "X-Hub-Signature-256": f"sha256={h.hexdigest()}",
