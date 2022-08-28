@@ -11,20 +11,36 @@ def post_status(event, context):
     pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
     message = json.loads(pubsub_message)
     job_name = message["resource"]["labels"]["job_name"]
-    hook_url = message["resource"]["labels"]["hook_url"]
-    # urls contain chars that can't be passed in labels; reconstruct the real url here
-    reconstructed_url = hook_url.replace("__", ".").replace("--", "/")
     severity = message["severity"]
-    print(job_name, hook_url)
+
+    # reconstruct webhook_url and recipe_run_id from encoded job_name
+    job_name = job_name[1:]  # drop leading 'a' from job_name
+    as_pairs = [a + b for a, b in zip(job_name[::2], job_name[1::2])]
+    control_character_idx = [
+        i for i, val in enumerate(as_pairs) if chr(int(val, 16)) == "%"
+    ].pop(0)
+    recipe_run_id = int("".join(as_pairs[control_character_idx + 1:]))
+    webhook_url = "".join(
+        [chr(int(val, 16)) for val in as_pairs[:control_character_idx]]
+    )
+    # if "smee" in url, this is a proxy service, which doesn't take the "/github/hooks/"
+    # route. otherwise, this is a named deployment, and we need to append this route.
+    # currently, local proxy services other than smee are not supported.
+    if "smee" not in webhook_url:
+        webhook_url += "/github/hooks/"
+    print(f"{job_name = }", f"{recipe_run_id = }", f"{webhook_url = }")
+
+    # infer state from severity level
     state = "failure"
     if severity == "DEBUG":
         state = "success"
+
     # The payload and headers for this request mimic the GitHub Events API.
     # This allows us to receive them on the same route as GitHub App webhooks
     # without special-casing in the route handler.
     payload = {
         "action": "complete",
-        "job_name": job_name,
+        "recipe_run_id": recipe_run_id,
         "state": state,
     }
     payload_bytes = json.dumps(message).encode("utf-8")
@@ -36,7 +52,7 @@ def post_status(event, context):
         "Accept": "application/vnd.github.v3+json",
     }
     requests.post(
-        f"https://{reconstructed_url}",
+        f"https://{webhook_url}",
         data=json.dumps(payload),
         headers=headers,
     )

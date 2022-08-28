@@ -16,13 +16,11 @@ webhook_secret = "abcdefg"
     {"WEBHOOK_SECRET": webhook_secret},
 )
 def test_post_status(requests):
-    job_name = "test"
-    hook_url = "api__pangeo-forge__org--github--hooks--"
+    job_name = "a736d65652e696f2f70474b4c61447536434a7769426a4a552501"
     message = {
         "resource": {
             "labels": {
                 "job_name": job_name,
-                "hook_url": hook_url,
             },
         },
         "severity": "DEBUG"
@@ -35,11 +33,11 @@ def test_post_status(requests):
     webhook_secret = bytes(os.environ["WEBHOOK_SECRET"], encoding="utf-8")
     h = hmac.new(webhook_secret, message_bytes, hashlib.sha256)
     requests.post.assert_called_once_with(
-        "https://api.pangeo-forge.org/github/hooks/",
+        "https://smee.io/pGKLaDu6CJwiBjJU",
         data=json.dumps(
             {
                 "action": "complete",
-                "job_name": job_name,
+                "recipe_run_id": 1,
                 "state": "success",
             }
         ),
