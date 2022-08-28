@@ -51,8 +51,9 @@ def post_status(event, context):
         "X-Hub-Signature-256": f"sha256={h.hexdigest()}",
         "Accept": "application/vnd.github.v3+json",
     }
-    requests.post(
+    response = requests.post(
         f"https://{webhook_url}",
         data=json.dumps(payload),
         headers=headers,
     )
+    print(f"{response.status_code = }", f"{response.text = }")
