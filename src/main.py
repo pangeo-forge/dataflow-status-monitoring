@@ -12,6 +12,8 @@ def post_status(event, context):
     message = json.loads(pubsub_message)
     job_name = message["resource"]["labels"]["job_name"]
     hook_url = message["resource"]["labels"]["hook_url"]
+    # urls contain chars that can't be passed in labels; reconstruct the real url here
+    reconstructed_url = hook_url.replace("__", ".").replace("--", "/")
     severity = message["severity"]
     print(job_name, hook_url)
     state = "failure"
@@ -34,7 +36,7 @@ def post_status(event, context):
         "Accept": "application/vnd.github.v3+json",
     }
     requests.post(
-        hook_url,
+        f"https://{reconstructed_url}",
         data=json.dumps(payload),
         headers=headers,
     )
