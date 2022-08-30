@@ -5,6 +5,7 @@ terraform {
       version = "4.15.0"
     }
   }
+  backend "local" { path = var.tfstate_path }
 }
 
 provider "google" {
