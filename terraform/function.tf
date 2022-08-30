@@ -33,6 +33,6 @@ resource "google_cloudfunctions_function" "function" {
   secret_environment_variables {
     key     = "WEBHOOK_SECRET"
     secret  = "github_app_webook_secret"
-    version = 1
+    version = 2
   }
 }
