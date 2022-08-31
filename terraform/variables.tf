@@ -19,8 +19,3 @@ variable "zone" {
   type    = string
   default = "us-central1-c"
 }
-
-variable "tfstate_path" {
-  type    = string
-  default = "terraform.tfstate"
-}
