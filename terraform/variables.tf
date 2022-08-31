@@ -6,6 +6,10 @@ variable "credentials_file" {
   type = string
 }
 
+variable "app_name" {
+  type = string
+}
+
 variable "webhook_secret" {
   type = string
 }

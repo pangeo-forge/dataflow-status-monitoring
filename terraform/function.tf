@@ -17,7 +17,7 @@ resource "google_storage_bucket_object" "zip" {
 }
 
 resource "google_cloudfunctions_function" "function" {
-  name    = "github-app-post-dataflow-status"
+  name    = "github-app-post-dataflow-status-${var.app_name}"
   runtime = "python39"
 
   source_archive_bucket = google_storage_bucket.function_bucket.name
@@ -32,7 +32,7 @@ resource "google_cloudfunctions_function" "function" {
   }
   secret_environment_variables {
     key     = "WEBHOOK_SECRET"
-    secret  = "github_app_webook_secret"
-    version = 2
+    secret  = "github_app_webook_secret-${var.app_name}"
+    version = 1
   }
 }
