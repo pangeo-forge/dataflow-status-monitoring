@@ -1,6 +1,6 @@
 resource "google_secret_manager_secret" "secret-basic" {
   secret_id = "github_app_webook_secret-${var.app_name}"
-
+  labels    = {}
   replication {
     user_managed {
       replicas {

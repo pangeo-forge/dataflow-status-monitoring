@@ -16,8 +16,15 @@ resource "google_storage_bucket_object" "zip" {
   bucket       = google_storage_bucket.function_bucket.name
 }
 
+locals {
+  app_names = [var.app_name]
+}
+
 resource "google_cloudfunctions_function" "function" {
-  name    = "github-app-post-dataflow-status-${var.app_name}"
+  for_each = {
+    for app in local.app_names : "github-app-post-dataflow-status-${app}" => "github_app_webook_secret-${app}"
+  }
+  name = each.key
   runtime = "python39"
 
   source_archive_bucket = google_storage_bucket.function_bucket.name
@@ -30,9 +37,11 @@ resource "google_cloudfunctions_function" "function" {
     event_type = "google.pubsub.topic.publish"
     resource   = resource.google_pubsub_topic.topic.id
   }
+  labels                = {}
+  environment_variables = {}
   secret_environment_variables {
     key     = "WEBHOOK_SECRET"
-    secret  = "github_app_webook_secret-${var.app_name}"
+    secret  = each.value
     version = 1
   }
 }
