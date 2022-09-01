@@ -1,7 +1,5 @@
 resource "google_secret_manager_secret" "secret-basic" {
-  for_each = [
-    for app in keys(var.apps_with_secrets) : "webook-secret-${app}"
-  ]
+  for_each = nonsensitive(toset(keys(var.apps_with_secrets)))
   secret_id = each.key
   labels    = {}
   replication {
@@ -14,15 +12,14 @@ resource "google_secret_manager_secret" "secret-basic" {
 }
 
 resource "google_secret_manager_secret_version" "secret-version-basic" {
-  for_each = {
-    for app, secret in var.apps_with_secrets : "webook-secret-${app}" => secret
-  }
+  for_each = nonsensitive(toset(keys(var.apps_with_secrets)))
   secret = each.key
-  secret_data = each.value
+  secret_data = var.apps_with_secrets[each.key]
 }
 
 resource "google_secret_manager_secret_iam_binding" "binding" {
-  secret_id = google_secret_manager_secret.secret-basic.secret_id
+  for_each = nonsensitive(toset(keys(var.apps_with_secrets)))
+  secret_id = each.key
   role      = "roles/secretmanager.secretAccessor"
   members = [
     "serviceAccount:${var.project}@appspot.gserviceaccount.com",

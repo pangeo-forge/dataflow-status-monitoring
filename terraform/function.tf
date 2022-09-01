@@ -17,9 +17,7 @@ resource "google_storage_bucket_object" "zip" {
 }
 
 resource "google_cloudfunctions_function" "function" {
-  for_each = {
-    for app in keys(var.apps_with_secrets) : "dataflow-status-${app}" => "webook-secret-${app}"
-  }
+  for_each = nonsensitive(toset(keys(var.apps_with_secrets)))
   name = each.key
   runtime = "python39"
 
@@ -37,7 +35,7 @@ resource "google_cloudfunctions_function" "function" {
   environment_variables = {}
   secret_environment_variables {
     key     = "WEBHOOK_SECRET"
-    secret  = each.value
+    secret  = each.key
     version = 1
   }
 }
