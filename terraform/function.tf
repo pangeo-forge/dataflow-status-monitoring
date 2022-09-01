@@ -14,6 +14,7 @@ resource "google_storage_bucket_object" "zip" {
   content_type = "application/zip"
   name         = "src-${data.archive_file.source.output_base64sha256}.zip"
   bucket       = google_storage_bucket.function_bucket.name
+  metadata     = {}
 }
 
 resource "google_cloudfunctions_function" "function" {

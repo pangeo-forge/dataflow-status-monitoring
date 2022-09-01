@@ -5,7 +5,10 @@ terraform {
       version = "4.15.0"
     }
   }
-  backend "local" {}
+  backend "gcs" {
+    bucket  = "pforge-tfstate"
+    prefix  = "terraform/state"
+  }
 }
 
 provider "google" {
