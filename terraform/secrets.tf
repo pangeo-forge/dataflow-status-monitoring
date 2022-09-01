@@ -13,7 +13,7 @@ resource "google_secret_manager_secret" "secret-basic" {
 
 resource "google_secret_manager_secret_version" "secret-version-basic" {
   for_each = nonsensitive(toset(keys(var.apps_with_secrets)))
-  secret = each.key
+  secret = google_secret_manager_secret.secret-basic[each.key].id
   secret_data = var.apps_with_secrets[each.key]
 }
 
