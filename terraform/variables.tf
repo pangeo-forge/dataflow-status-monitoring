@@ -8,6 +8,7 @@ variable "credentials_file" {
 
 variable "apps_with_secrets" {
   type = map
+  sensitive = true
 }
 
 variable "region" {
