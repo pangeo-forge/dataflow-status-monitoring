@@ -1,5 +1,8 @@
 resource "google_secret_manager_secret" "secret-basic" {
-  secret_id = "github_app_webook_secret-${var.app_name}"
+  for_each = [
+    for app in keys(var.apps_with_secrets) : "webook-secret-${app}"
+  ]
+  secret_id = each.key
   labels    = {}
   replication {
     user_managed {
@@ -11,9 +14,11 @@ resource "google_secret_manager_secret" "secret-basic" {
 }
 
 resource "google_secret_manager_secret_version" "secret-version-basic" {
-  secret = google_secret_manager_secret.secret-basic.id
-
-  secret_data = var.webhook_secret
+  for_each = {
+    for app, secret in var.apps_with_secrets : "webook-secret-${app}" => secret
+  }
+  secret = each.key
+  secret_data = each.value
 }
 
 resource "google_secret_manager_secret_iam_binding" "binding" {

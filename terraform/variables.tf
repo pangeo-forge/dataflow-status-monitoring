@@ -6,12 +6,8 @@ variable "credentials_file" {
   type = string
 }
 
-variable "app_name" {
-  type = string
-}
-
-variable "webhook_secret" {
-  type = string
+variable "apps_with_secrets" {
+  type = map
 }
 
 variable "region" {

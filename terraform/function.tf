@@ -16,13 +16,9 @@ resource "google_storage_bucket_object" "zip" {
   bucket       = google_storage_bucket.function_bucket.name
 }
 
-locals {
-  app_names = [var.app_name]
-}
-
 resource "google_cloudfunctions_function" "function" {
   for_each = {
-    for app in local.app_names : "github-app-post-dataflow-status-${app}" => "github_app_webook_secret-${app}"
+    for app in keys(var.apps_with_secrets) : "dataflow-status-${app}" => "webook-secret-${app}"
   }
   name = each.key
   runtime = "python39"
