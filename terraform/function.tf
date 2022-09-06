@@ -5,7 +5,7 @@ resource "google_storage_bucket" "function_bucket" {
 
 data "archive_file" "source" {
   type        = "zip"
-  source_dir  = "../src"
+  source_dir  = var.function_src_dir
   output_path = "/tmp/function.zip"
 }
 

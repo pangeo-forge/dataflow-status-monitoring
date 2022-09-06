@@ -11,6 +11,10 @@ variable "apps_with_secrets" {
   sensitive = true
 }
 
+variable "function_src_dir" {
+  type = string
+}
+
 variable "region" {
   type    = string
   default = "us-central1"
