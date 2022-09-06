@@ -15,6 +15,10 @@ variable "function_src_dir" {
   type = string
 }
 
+variable "env" {
+  type = string
+}
+
 variable "region" {
   type    = string
   default = "us-central1"

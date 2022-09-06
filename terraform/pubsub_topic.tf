@@ -1,5 +1,5 @@
 resource "google_pubsub_topic" "topic" {
-  name = "github-app-dataflow-status-topic"
+  name = "${var.env}-github-app-dataflow-status-topic"
 }
 data "google_project" "project" {}
 data "google_iam_policy" "publisher" {
