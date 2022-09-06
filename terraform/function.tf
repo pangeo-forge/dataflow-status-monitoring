@@ -1,5 +1,5 @@
 resource "google_storage_bucket" "function_bucket" {
-  name     = "${var.project}-${var.env}-github-app-dataflow-status-function"
+  name     = "${var.project}-${var.env}-dataflow-status-func"
   location = var.region
 }
 
