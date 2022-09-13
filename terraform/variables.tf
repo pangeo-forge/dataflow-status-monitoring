@@ -6,7 +6,16 @@ variable "credentials_file" {
   type = string
 }
 
-variable "pat" {
+variable "apps_with_secrets" {
+  type = map
+  sensitive = true
+}
+
+variable "function_src_dir" {
+  type = string
+}
+
+variable "env" {
   type = string
 }
 
@@ -18,12 +27,4 @@ variable "region" {
 variable "zone" {
   type    = string
   default = "us-central1-c"
-}
-
-variable "repo_org" {
-  type = string
-}
-
-variable "repo" {
-  type = string
 }
