@@ -80,7 +80,7 @@ def post_status(event, context):
         "Accept": "application/vnd.github.v3+json",
     }
     response = requests.post(
-        f"https://{webhook_url}",
+        webhook_url,
         data=payload,
         headers=headers,
     )
